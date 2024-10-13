@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: webcolor
 spec:
-  replicas: 2 # Para alta disponibilidade, se necessário.
   selector:
     matchLabels:
       app: webcolor
@@ -17,34 +16,3 @@ spec:
         image: fabricioveronez/web-page:green
         ports:
         - containerPort: 80
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 80
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /ready
-            port: 80
-          initialDelaySeconds: 5
-          periodSeconds: 5        
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: webcolor
-spec:
-  selector:
-    app: webcolor
-  ports:
-    - port: 80  
-      targetPort: 80  
